@@ -89,7 +89,7 @@ class EmailUserCreationForm(UserCreationForm):
         return email
 
     def save(self, commit=True):
-        create_user(self.cleaned_data["email"], password=self.cleaned_data["password"])
+        create_user(self.cleaned_data["email"], password=self.cleaned_data["password1"])
 
 
 class EmailUserChangeForm(UserChangeForm):
