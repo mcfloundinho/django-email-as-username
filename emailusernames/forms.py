@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Authenti
 from django.contrib.admin.forms import AdminAuthenticationForm
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from emailusernames.utils import user_exists
+from emailusernames.utils import user_exists, create_user
 
 
 ERROR_MESSAGE = _("Please enter a correct email and password. ")
@@ -89,10 +89,7 @@ class EmailUserCreationForm(UserCreationForm):
         return email
 
     def save(self, commit=True):
-        # Ensure that the username is set to the email address provided,
-        # so the user_save_patch() will keep things in sync.
-        self.instance.username = self.instance.email
-        return super(EmailUserCreationForm, self).save(commit=commit)
+        create_user(self.cleaned_data["email"], password=self.cleaned_data["password"])
 
 
 class EmailUserChangeForm(UserChangeForm):
